@@ -60,7 +60,7 @@ outFile = wd+"\\MCG-Archive_tags.json"
 
 #Load and parse JSON object of each confluence page
 #Clean and prepare a dictoinay of all pages
-allPages = {"pageId":[],"pageTitle":[],"text":[]}
+allPages = {"pageId":[],"pageTitle":[],"text":[],"words":[]}
 with open(inFile,'r') as confSpaceData:
     for pagejson in confSpaceData:
         if pagejson.startswith("{") and pagejson.endswith("\n"):
@@ -69,14 +69,14 @@ with open(inFile,'r') as confSpaceData:
             parsedpagejson = json.loads(pagejson)
             if parsedpagejson["content"] != "":
                 soup = bs(parsedpagejson["content"],"html.parser")
-                t = soup.getText() #-- get all text from the html page; mushes text from multiple html tags together; for ex: h1 and p (ObjectiveThe)
+                t = soup.getText(separator=" ") #-- get all text from the html page; mushes text from multiple html tags together; for ex: h1 and p (ObjectiveThe)
                 w = posWords(t)
                 thisPage = {"pageId": parsedpagejson["pageId"],"pageTitle": parsedpagejson["pageTitle"],"text": t, "words": w}
                 for key in allPages.keys():
                     allPages[key].append(thisPage[key])
 confSpaceData.close()
 
-for i in range(2): #len(allPages["text"]):
+for i in range(15): #len(allPages["text"]):
     print ("Top words in page: {}".format(allPages["pageTitle"][i]))
     scores = {word: tfidf(word, allPages["words"][i], allPages["words"]) for word in allPages["words"][i]}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=true)
