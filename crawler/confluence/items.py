@@ -27,8 +27,7 @@ class ConfluenceItem(scrapy.Item):
     pageTitle = scrapy.Field()
     content = scrapy.Field()
     labels = scrapy.Field()
-
-
+    ancestors = scrapy.Field()
 
 class TryingItem(scrapy.Item):
     # define the fields for your item here like:

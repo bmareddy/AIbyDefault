@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import scrapy
 import json
 
@@ -9,7 +8,6 @@ from scrapy.http import Request
 
 from confluence.items import ConfluenceItem
 from confluence.credentials import username, password
-
 
 # download_delay setting
 class ConfluenceSpider(Spider):
@@ -29,11 +27,11 @@ class ConfluenceSpider(Spider):
 
         ## Bobby : 90972601
         ## Dan : 133204509
-        ## NYC office: 94754511
+        ## NYC office: 94754511s
         ## MCI : 131895457
         ## MCG Archive: 131895487
     def after_login(self, response):
-        return Request(url="https://confluence/rest/api/content/133204509/child/page", callback=self.parse_page)
+        return Request(url="https://confluence/rest/api/content/131895457/child/page", callback=self.parse_page)
 
     def parse_page(self, response):
         jsonData = json.loads(response.body_as_unicode())
@@ -41,7 +39,7 @@ class ConfluenceSpider(Spider):
             childPageId = result["id"]
             # TODO - add error parsing option
             yield Request(url="https://confluence/rest/api/content/" + str(childPageId) +
-                          "?expand=space,body.view,container,metadata.labels", callback = self.parse_content)
+                          "?expand=space,body.view,container,metadata.labels,ancestors", callback = self.parse_content)
             yield Request(url="https://confluence/rest/api/content/" + str(childPageId) +
                             "/child/page", callback=self.parse_page)
 
@@ -51,12 +49,17 @@ class ConfluenceSpider(Spider):
         pageTitle = jsonPage["title"]
         content = jsonPage["body"]["view"]["value"]
         labels = jsonPage["metadata"]["labels"]["results"]
+        ancestors = jsonPage["ancestors"]
+        ancestorList = []
+        for ancestor in ancestors:
+            ancestorList.append({"id":ancestor["id"], "title":ancestor["title"]})
 
         item = ConfluenceItem()
         item['pageId'] = pageId
         item['pageTitle'] = pageTitle
         item['content'] = content
         item['labels'] = labels
+        item['ancestors'] = ancestorList
 
         print('Parsed page ' + pageTitle)
         return item
