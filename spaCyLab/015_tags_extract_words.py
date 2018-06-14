@@ -2,9 +2,6 @@ import json
 from bs4 import BeautifulSoup as bs
 import spacy
 
-#Load English language model
-nlp = spacy.load("en_core_web_sm")
-
 #static variables
 true = True
 false = False
@@ -41,28 +38,36 @@ def posWords(t):
 # JSON export of the confluence space
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
 inFile = wd+"\\MCG-Archive.json"
-outFile = wd+"\\MCG-Archive_tags.json"
 wordsFile = wd+"\\MCG-Archive_allWords_lemma.json"
 
 #Load and parse JSON object of each confluence page
 #Clean and prepare a dictoinay of all pages
-allPages = {"pageId":[],"pageTitle":[],"words":[]}
-with open(inFile,'r') as confSpaceData:
-    for pagejson in confSpaceData:
-        if pagejson.startswith("{") and pagejson.endswith("\n"):
-            if pagejson[len(pagejson)-2] == ",":
-                pagejson = pagejson[:-2]
-            parsedpagejson = json.loads(pagejson)
-            if parsedpagejson["content"] != "":
-                soup = bs(parsedpagejson["content"],"html.parser")
-                t = soup.getText(separator=" ") #-- get all text from the html page; mushes text from multiple html tags together; for ex: h1 and p (ObjectiveThe)
-                w = posWords(t)
-                thisPage = {"pageId": parsedpagejson["pageId"],"pageTitle": parsedpagejson["pageTitle"], "words": w}
-                for key in allPages.keys():
-                    allPages[key].append(thisPage[key])
-confSpaceData.close()
+try:
+    allPages = {"pageId":[],"pageTitle":[],"words":[]}
+    nlp = spacy.load("en_core_web_lg")     #Load English language model
+    with open(inFile,'r') as confSpaceData:
+        for pagejson in confSpaceData:
+            if pagejson.startswith("{") and pagejson.endswith("\n"):
+                if pagejson[len(pagejson)-2] == ",":
+                    pagejson = pagejson[:-2]
+                parsedpagejson = json.loads(pagejson)
+                if parsedpagejson["content"] != "":
+                    soup = bs(parsedpagejson["content"],"html.parser")
+                    t = soup.getText(separator=" ") #-- get all text from the html page; mushes text from multiple html tags together; for ex: h1 and p (ObjectiveThe)
+                    w = posWords(t)
+                    thisPage = {"pageId": parsedpagejson["pageId"],"pageTitle": parsedpagejson["pageTitle"], "words": w}
+                    for key in allPages.keys():
+                        allPages[key].append(thisPage[key])
+    confSpaceData.close()
 
-# Write the words list to a file for use by tf-idf
-with open(wordsFile,"w") as confSpacePageWords:
-    json.dump(allPages, confSpacePageWords)
-confSpacePageWords.close()
+    # Write the words list to a file for use by tf-idf
+    with open(wordsFile,"w") as confSpacePageWords:
+        json.dump(allPages, confSpacePageWords)
+    confSpacePageWords.close()
+except Exception as e:
+    print (e)
+finally:
+    if not confSpaceData.closed:
+        confSpaceData.close() 
+    if not confSpacePageWords.closed:
+        confSpacePageWords .close() 
