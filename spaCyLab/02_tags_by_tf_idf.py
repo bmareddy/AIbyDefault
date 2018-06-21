@@ -34,7 +34,7 @@ try:
         topwords = [word for word, score in sorted_words[:10]]
         topscores = [round(score,5) for word, score in sorted_words[:10]]
         if topwords:
-            json.dump({"pageId": allPages["pageId"][i], "words": topwords, "scores": topscores},tags)
+            json.dump({"pageId": allPages["pageId"][i], "pageTitle": allPages["pageTitle"][i], "words": topwords, "scores": topscores},tags)
             tags.write("\n")
             #print ({"pageId": allPages["pageId"][i], "words": topwords, "scores": topscores})
 except Exception as e:

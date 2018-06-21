@@ -1,13 +1,17 @@
 import json
 import spacy
+import numpy as np
 
 def get_vectors(wordlist):
     tokens = nlp(" ".join(str(s) for s in wordlist))
-    pageVec = []
+    pageVec = np.array([])
     for token in tokens:
         wordVec = token.vector
-        print(type(wordVec))
-        pageVec.append(wordVec[0])
+        wordVec = wordVec.reshape(1,300)
+        if pageVec.size == 0:
+            pageVec = wordVec
+        else:
+            pageVec = np.concatenate([pageVec,wordVec],axis = 0)
     return pageVec
 
 # JSON export of the lemmatized words per each page
@@ -15,14 +19,19 @@ wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
 inFile = wd+"\\MCG-Archive_tags_tfidf.json"
 outFile = wd+"\\MCG-Archive_tags_vectors.json"
 
+vecs = open(outFile,"w",newline = "\n")
 try:
     pageTopWords = open(inFile,"r").read().splitlines()
     pageTopWords = [json.loads(ptw) for ptw in pageTopWords]
-    nlp = spacy.load("en_core_web_lg") # Load English language LARGE model; there is also another model explicitly for vectors
+    docVector = {}
+    nlp = spacy.load("en_vectors_web_lg") # Load English language LARGE model; there is also another model explicitly for vectors
     for ptw in pageTopWords:
-        pass
-    print(ptw["words"],get_vectors(ptw["words"]))
+        pageVec = get_vectors(ptw["words"])
+        pageVecMean = pageVec.mean(axis = 0)
+        docVector = {"pageId": ptw["pageId"], "pageTitle": ptw["pageTitle"], "words": ptw["words"], "vector": pageVecMean.tolist()}
+        vecs.write(json.dumps(docVector))
+        vecs.write("\n")
 except Exception as e:
     print(e)
 finally:
-    print("The End")
+    pass
