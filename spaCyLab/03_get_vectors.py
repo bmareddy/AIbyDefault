@@ -14,10 +14,11 @@ def get_vectors(wordlist):
             pageVec = np.concatenate([pageVec,wordVec],axis = 0)
     return pageVec
 
-# JSON export of the lemmatized words per each page
-wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
-inFile = wd+"\\MCG-Archive_tags_tfidf.json"
-outFile = wd+"\\MCG-Archive_tags_vectors.json"
+# JSON export of the tfidf words & scores per each page
+space = "DMT"
+wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
+inFile = "{}\\{}_tags_tfidf.json".format(wd,space)
+outFile = "{}\\{}_tags_vectors.json".format(wd,space)
 
 vecs = open(outFile,"w",newline = "\n")
 try:

@@ -14,8 +14,9 @@ def similar_pages(vsm,page_position):
     return sim_pages
 
 # JSON export of the page, its words and vector
-wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
-inFileVecs = wd+"\\MCG-Archive_tags_vectors.json"
+space = "DMT"
+wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
+inFileVecs = "{}\\{}_tags_vectors.json".format(wd,space)
 #outFile = wd+"\\MCG-Archive_tags_vectors.json"
 
 try:

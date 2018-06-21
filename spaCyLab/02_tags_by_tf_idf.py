@@ -20,9 +20,10 @@ def tfidf(word, thisPageWords, allPagesWords):
     return tf(word, thisPageWords) * idf(word, allPagesWords)
 
 # JSON export of the lemmatized words per each page
-wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
-inFile = wd+"\\MCG-Archive_allWords_lemma.json"
-outFile = wd+"\\MCG-Archive_tags_tfidf.json"
+space = "DMT"
+wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
+inFile = "{}\\{}_allWords_lemma.json".format(wd,space)
+outFile = "{}\\{}_tags_tfidf.json".format(wd,space)
 
 tags = open(outFile,"w",newline="\n")
 try:

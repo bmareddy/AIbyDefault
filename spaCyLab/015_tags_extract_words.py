@@ -36,9 +36,10 @@ def posWords(t):
     return words
 
 # JSON export of the confluence space
-wd = "C:\\Users\\bmareddy\\Documents\\PyLab"
-inFile = wd+"\\MCG-Archive.json"
-wordsFile = wd+"\\MCG-Archive_allWords_lemma.json"
+space = "DMT"
+wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
+inFile = "{}\\{}.json".format(wd,space)
+wordsFile = "{}\\{}_allWords_lemma.json".format(wd,space)
 
 #Load and parse JSON object of each confluence page
 #Clean and prepare a dictoinay of all pages
