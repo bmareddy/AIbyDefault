@@ -20,7 +20,7 @@ def tfidf(word, thisPageWords, allPagesWords):
     return tf(word, thisPageWords) * idf(word, allPagesWords)
 
 # JSON export of the lemmatized words per each page
-space = "DMT"
+space = "Key-Terms"
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
 inFile = "{}\\{}_allWords_lemma.json".format(wd,space)
 outFile = "{}\\{}_tags_tfidf.json".format(wd,space)

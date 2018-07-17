@@ -15,7 +15,7 @@ def get_vectors(wordlist):
     return pageVec
 
 # JSON export of the tfidf words & scores per each page
-space = "DMT"
+space = "Key-Terms"
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
 inFile = "{}\\{}_tags_tfidf.json".format(wd,space)
 outFile = "{}\\{}_tags_vectors.json".format(wd,space)
