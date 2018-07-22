@@ -31,8 +31,9 @@ class ConfluenceSpider(Spider):
         ## MCI : 131895457
         ## MCG Archive: 131895487
         ## DMT: 50168843
+		## Key Terms : 135451964
     def after_login(self, response):
-        return Request(url="https://confluence/rest/api/content/50168843/child/page", callback=self.parse_page)
+        return Request(url="https://confluence/rest/api/content/135451964/child/page", callback=self.parse_page)
 
     def parse_page(self, response):
         jsonData = json.loads(response.body_as_unicode())

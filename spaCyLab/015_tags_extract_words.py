@@ -36,7 +36,7 @@ def posWords(t):
     return words
 
 # JSON export of the confluence space
-space = "DMT"
+space = "Key-Terms"
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
 inFile = "{}\\{}.json".format(wd,space)
 wordsFile = "{}\\{}_allWords_lemma.json".format(wd,space)

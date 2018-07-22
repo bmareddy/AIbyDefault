@@ -16,12 +16,12 @@ def similar_pages(vsm,page_position,n = 5):
 
 def similar_words_from_vocab(source_vec,n = 5):
     nlp = spacy.load("en_core_web_lg")
-    word_similarity = [(word.text.lower(), np.asscalar(cosine_similarity(source_vec.reshape(1,300),word.vector.reshape(1,300)))) for word in nlp.vocab if word.prob >= -15]
+    word_similarity = [(word.text.lower(), np.asscalar(cosine_similarity(source_vec.reshape(1,300),word.vector.reshape(1,300)))) for word in nlp.vocab if word.prob >= -15 and not word.is_stop]
     sorted_word_similarity = sorted(list(set(word_similarity)), key = lambda x: x[1], reverse = True)
     return sorted_word_similarity[:n]
 
 # JSON export of the page, its words and vector
-space = "DMT"
+space = "Key-Terms"
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
 inFileVecs = "{}\\{}_tags_vectors.json".format(wd,space)
 #outFile = wd+"\\MCG-Archive_tags_vectors.json"

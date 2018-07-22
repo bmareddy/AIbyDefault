@@ -43,9 +43,10 @@ def posWords(objJSON):
     return words
 
 # JSON export of the confluence space
-wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\AIbyDefault"
-inFile = wd+"\\MCG-Archive.json"
-outFile = wd+"\\MCG-Archive_tags.json"
+space = "Key-Terms"
+wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
+inFile = "{}\\{}.json".format(wd,space)
+outFile = "{}\\{}_tags.json".format(wd,space)
 
 #Load and parse JSON object of each confluence page
 #For each page that has content, compute 3 most common words
