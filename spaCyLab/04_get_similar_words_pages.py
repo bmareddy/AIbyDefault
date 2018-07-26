@@ -23,12 +23,12 @@ def similar_words_from_vocab(source_vec,n = 5):
 # JSON export of the page, its words and vector
 space = "Key-Terms"
 wd = "C:\\Users\\bmareddy\\Documents\\PyLab\\data"
-inFileVecs = "{}\\{}_tags_vectors.json".format(wd,space)
-#outFile = wd+"\\MCG-Archive_tags_vectors.json"
+inFileVecs = "{}\\{}_tags_vectors_weighted.json".format(wd,space)
 
+print ("Using input file {}".format(inFileVecs))
 try:
     pageVectors = [json.loads(pv) for pv in open(inFileVecs,"r").read().splitlines()]
-    page_pos = rand.randint(0,len(pageVectors))
+    page_pos = 27 #rand.randint(0,len(pageVectors))
     source_vec = np.asarray(pageVectors[page_pos]["vector"])
     print ("Finding similar pages for: {}".format(pageVectors[page_pos]["pageTitle"]))
     sp = similar_pages(pageVectors,page_pos)
