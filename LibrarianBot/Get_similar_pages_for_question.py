@@ -39,9 +39,9 @@ wd = Constants.WORKING_DIRECTORY
 # space = "mci_"
 nlp = spacy.load("en_vectors_web_lg")
 
-def get_similar_pages_for_sentence(space, sentence):
+def get_similar_pages_for_sentence(space, version, sentence):
     try:
-        inFileVecs = "{}\\{}tags_vectors.json".format(Constants.WORKING_DIRECTORY, space)
+        inFileVecs = "{}\\{}tags_vectors{}.json".format(Constants.WORKING_DIRECTORY, space, version)
         pageVectors = [json.loads(pv) for pv in open(inFileVecs,"r").read().splitlines()]
         print ("Finding similar pages for:" + sentence)
         

@@ -17,12 +17,25 @@ def get_vectors(wordlist):
             pageVec = np.concatenate([pageVec, wordVec], axis=0)
     return pageVec
 
+def get_weighted_vectors(wordlist, scores):
+    tokens = nlp(" ".join(str(s) for s in wordlist))
+    pageVec = np.array([])
+    for token, score in zip(tokens, scores):
+        wordVec = np.multiply(token.vector,np.asarray(score))
+        wordVec = wordVec.reshape(1,300)
+        if pageVec.size == 0:
+            pageVec = wordVec
+        else:
+            pageVec = np.concatenate([pageVec,wordVec],axis = 0)
+        
+    return pageVec
+
 
 def main():
     # JSON export of the tfidf words & scores per each page
     wd = "C:\\Users\\dkang\\Documents\\Python Scripts\\aibydefault\\AiByDefault\\LibrarianBot\\Crawler\\data"
     inFile = "{}\\tags_tfidf.json".format(wd)
-    outFile = "{}\\tags_vectors.json".format(wd)
+    outFile = "{}\\tags_vectors_weighted.json".format(wd)
 
     vecs = open(outFile, "w", newline="\n")
     try:
@@ -32,8 +45,11 @@ def main():
 
         # Load English language LARGE model; there is also another model explicitly for vectors
         for ptw in pageTopWords:
-            pageVec = get_vectors(ptw["words"])
-            pageVecMean = pageVec.mean(axis=0)
+            # pageVec = get_vectors(ptw["words"])
+            # pageVecMean = pageVec.mean(axis=0)
+            pageVec_weighted = get_weighted_vectors(ptw["words"], ptw["scores"])
+            weight = sum(score for score in ptw["scores"])
+            pageVecMean = np.divide(np.sum(pageVec_weighted,axis = 0), np.asarray(weight))
             docVector = {"pageId": ptw["pageId"], "pageTitle": ptw["pageTitle"], "words": ptw["words"],
                          "vector": pageVecMean.tolist(), "ancestorId": ptw["ancestorId"]}
             vecs.write(json.dumps(docVector))

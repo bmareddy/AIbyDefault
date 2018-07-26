@@ -14,11 +14,19 @@ def parse_command(command):
         response = "Command tag called"
     elif command.startswith(Constants.COMMAND_ANSWER):
         input = command.replace(Constants.COMMAND_ANSWER, "", 1)
-        response = get_similar_pages_for_sentence(Constants.space, input)
+        response = get_similar_pages_for_sentence(Constants.space, Constants.version, input)
     elif command.startswith(Constants.COMMAND_SIMILAR):
         response = "Command similar called"
     elif command.startswith(Constants.COMMAND_SWITCH_TO):
         input = command.replace(Constants.COMMAND_SWITCH_TO, "", 1)
         response = "Switching space to {}".format(input)
         Constants.space = input
+    elif command.startswith(Constants.COMMAND_VERSION):
+        input = command.replace(Constants.COMMAND_VERSION, "", 1)
+        if (input == "weighted"):
+            Constants.version = "_weighted"
+            response = "Using {} version".format(input)
+        else:
+            Constants.version = ""
+            response = "Using Normal version"
     return response or default_response
