@@ -30,7 +30,7 @@ def similar_pages(vsm, source_vec):
     sim_page_positions = [(i,cosine_similarity(source_vec,compare_vec[i].reshape(1, 300))) for i in range(len(vsm))]
     sim_page_positions = [(x[0], float(x[1].reshape(1,))) for x in sim_page_positions]
     sim_page_positions.sort(key=lambda x: x[1], reverse = True)
-    sim_pages = [(vsm[x[0]]["pageTitle"], x[1]) for x in sim_page_positions[:10]]
+    sim_pages = [(vsm[x[0]]["pageTitle"], x[1], vsm[x[0]]["pageId"]) for x in sim_page_positions[:10]]
     return sim_pages
 
 
@@ -47,7 +47,7 @@ def get_similar_pages_for_sentence(space, version, sentence):
         
         sent_vec = get_vectors(sentence)
         sp = similar_pages(pageVectors, sent_vec)
-        output = '\n'.join("{} ({})".format(page[0], round(page[1],3)) for page in sp)
+        output = '\n'.join("{} ({}) - https://confluence/pages/viewpage.action?pageId={}".format(page[0], round(page[1],3), page[2]) for page in sp)
         # print(output)
         return output
     except Exception as e:
