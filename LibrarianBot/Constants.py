@@ -1,5 +1,5 @@
 # slack credentials (todo - env variable)
-SLACK_TOKEN = ""
+SLACK_TOKEN = "N/A"
 
 # commands
 COMMAND_TAG = "tag "
