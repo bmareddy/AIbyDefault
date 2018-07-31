@@ -1,6 +1,8 @@
 # AIbyDefault
 Code for the AIbyDefault program
+
 Authors: Daniel Kang, Bobby Mareddy
+
 Date: July 31st, 2018
 
 ## Description
